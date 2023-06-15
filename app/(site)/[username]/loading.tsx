@@ -37,6 +37,14 @@ const Loading = () => {
           <Skeleton className="bg-gray-600 h-3 w-24 rounded" />
         </div>
       </div>
+      <div className="border border-gray-800 h-auto flex p-4 gap-4 cursor-pointer">
+        <Skeleton className="bg-gray-800 rounded-full h-12 w-12 border-[2px] border-gray-800 items-center flex justify-center" />
+        <div className="flex flex-col gap-3 w-full">
+          <Skeleton className="bg-gray-600 h-3 w-32 rounded" />
+          <Skeleton className="bg-gray-600 h-3 w-full rounded" />
+          <Skeleton className="bg-gray-600 h-3 w-32 rounded" />
+        </div>
+      </div>
     </div>
   );
 };

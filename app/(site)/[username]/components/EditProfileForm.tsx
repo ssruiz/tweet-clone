@@ -14,11 +14,12 @@ import {
 } from 'react-hook-form';
 
 import { ChangeEvent, useState } from 'react';
-import { toast } from 'react-hot-toast';
+
 import { useRouter } from 'next/navigation';
 import Spinner from '@/app/components/ui/Spinner';
 import useUsers from '@/app/hooks/useUsers';
 import { Button } from '@/app/components/ui/button';
+import { useToast } from '@/app/hooks';
 
 interface Props {
   user: ProfileUserT;
@@ -27,6 +28,7 @@ interface Props {
 
 const EditProfileForm: React.FC<Props> = ({ user, onClose }) => {
   const router = useRouter();
+  const { success, error } = useToast();
   const [coverImageFile, setCoverImageFileFile] = useState<File>();
   const [imageFile, setImageFile] = useState<File>();
   const [isSaving, setIsSaving] = useState(false);
@@ -71,12 +73,12 @@ const EditProfileForm: React.FC<Props> = ({ user, onClose }) => {
 
     setIsSaving(false);
     if (!result.error) {
-      toast.success('User update!');
+      success('User update!');
       onClose();
       router.refresh();
     } else {
       console.log('error', result.error);
-      toast.error('Something went wrong');
+      error('Something went wrong');
     }
   };
 

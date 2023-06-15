@@ -30,7 +30,7 @@ const FollowBar = async () => {
                 <p className="text-neutral-400 text-sm">@{user.username}</p>
               </div>
             </Link>
-            <FollowButton />
+            <FollowButton userId={user.id} />
           </div>
         ))}
       </div>

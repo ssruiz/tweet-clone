@@ -1,6 +1,8 @@
 'use client';
 
 import { Button, Input } from '@/app/components/ui';
+import SpinnerNormal from '@/app/components/ui/SpinnerNormal';
+import { useToast } from '@/app/hooks';
 import { Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import { signIn } from 'next-auth/react';
@@ -9,10 +11,10 @@ import React, {
   Dispatch,
   MutableRefObject,
   SetStateAction,
+  useEffect,
   useState,
 } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
 
 type LoginSteps = 'ONE' | 'TWO';
 
@@ -22,9 +24,16 @@ interface Props {
 
 const SignInForm: React.FC<Props> = ({ hiddeContent }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const { success, error } = useToast();
   const router = useRouter();
 
   const [loginStep, setLoginStep] = useState<LoginSteps>('ONE');
+
+  useEffect(() => {
+    return () => {
+      router.refresh();
+    };
+  }, [router]);
 
   const {
     register,
@@ -43,20 +52,21 @@ const SignInForm: React.FC<Props> = ({ hiddeContent }) => {
       setLoginStep('TWO');
       hiddeContent((prev) => !prev);
     } else {
-      console.log('data', data);
       // Login
       try {
+        setIsLoading(true);
         const result = await signIn('credentials', {
           ...data,
           redirect: false,
         });
-        if (result?.error) toast.error('Invalid credentials');
+        console.log('result', result);
+        if (result?.error) error('Invalid credentials');
         if (result?.ok && !result?.error) {
-          toast.success('Success!');
+          success('Login succeed!');
           router.back();
         }
-      } catch (error) {
-        toast.error('Something went wrong');
+      } catch (e) {
+        error('Something went wrong');
       } finally {
         setIsLoading(false);
         return;
@@ -92,6 +102,7 @@ const SignInForm: React.FC<Props> = ({ hiddeContent }) => {
           <div className="mt-5">
             <Input
               label="Password"
+              type="password"
               id={'password'}
               register={register}
               errors={errors}
@@ -99,17 +110,19 @@ const SignInForm: React.FC<Props> = ({ hiddeContent }) => {
             />
           </div>
         </Transition>
-        <div className="flex flex-col space-y-6 mt-5">
-          <Button
-            type="submit"
-            variant="secondary"
-            className="rounded-full bg-white text-black hover:bg-gray-200"
-          >
-            {loginStep === 'ONE' ? 'Next' : 'Sign in'}
-          </Button>
-          {/* {loginStep === 'ONE' && (
-            <Button intent="secondaryy">Forgot Password?</Button>
-          )} */}
+        <div className="flex flex-col space-y-6 mt-5 items-center">
+          {!isLoading && (
+            <Button
+              type="submit"
+              variant="secondary"
+              className="rounded-full bg-white text-black hover:bg-gray-200 w-full"
+              disabled={isLoading}
+            >
+              {loginStep === 'ONE' ? 'Next' : 'Sign in'}
+            </Button>
+          )}
+
+          {isLoading && <SpinnerNormal />}
         </div>
       </form>
     </div>

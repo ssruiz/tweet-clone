@@ -1,7 +1,7 @@
 'use client';
 import Header from '../components/Header';
 import TweetBox from '../components/TweetBox';
-import getPosts from '../actions/getPosts';
+
 import Avatar from '../components/Avatar';
 import { parseDate, tweetTimeElapsed } from '../utils/formaters';
 import { FaRegComment } from 'react-icons/fa';
@@ -20,6 +20,8 @@ interface Props {
   username: string;
   likeByUser?: boolean;
   name: string;
+  comments: number;
+  rts: number;
 }
 
 const TweetPreview: React.FC<Props> = ({
@@ -31,6 +33,8 @@ const TweetPreview: React.FC<Props> = ({
   username,
   likeByUser,
   name,
+  comments,
+  rts,
 }) => {
   const router = useRouter();
   const { likePost } = usePosts();
@@ -62,7 +66,7 @@ const TweetPreview: React.FC<Props> = ({
               />
             </div>
             <span className="group-hover:text-brand-200 text-white text-sm">
-              {12}
+              {comments}
             </span>
           </div>
           <div className="flex items-center">
@@ -73,7 +77,7 @@ const TweetPreview: React.FC<Props> = ({
               />
             </div>
             <span className="peer-hover/rt:text-green-600 text-white text-sm">
-              {12}
+              {rts}
             </span>
           </div>
 

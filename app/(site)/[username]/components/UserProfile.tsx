@@ -24,18 +24,26 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/app/components/ui/tabs';
+import { FollowButton } from '@/app/components/ui';
 
 interface Props {
   user: ProfileUserT;
   canEdit?: boolean;
   posts: PostDTO[];
+  currentUserId: string;
 }
 
-const UserProfile: React.FC<Props> = ({ user, canEdit = false, posts }) => {
+const UserProfile: React.FC<Props> = ({
+  user,
+  canEdit = false,
+  posts,
+  currentUserId,
+}) => {
   const { username, createdAt, name, bio, location, id } = user;
 
   const [showModal, setShowModal] = useState(false);
 
+  console.log('user', user);
   const onClose = useCallback(() => {
     setShowModal(false);
   }, []);
@@ -56,9 +64,31 @@ const UserProfile: React.FC<Props> = ({ user, canEdit = false, posts }) => {
           </div>
         )}
 
+        {!canEdit && (
+          <div className="flex">
+            <div className="flex-1" />
+            <FollowButton
+              userId={user.id}
+              followByCurrentUser={user.followedBy.some(
+                (follow) => follow.followerId === currentUserId
+              )}
+            />
+          </div>
+        )}
+
         <div className={clsx('w-full flex flex-col', { 'mt-10': !canEdit })}>
           <p className="text-xl font-medium">{name || `@${username}`}</p>
-          <p className="text-sm text-gray-600">@{username}</p>
+          <div className="flex items-center gap-2">
+            <p className="text-sm text-gray-600">@{username}</p>
+            {!canEdit &&
+              user.following.some(
+                (follow) => follow.followingId === currentUserId
+              ) && (
+                <span className="text-xs text-gray-400 bg-gray-200/10 p-[3px] rounded-md">
+                  Follows you
+                </span>
+              )}
+          </div>
         </div>
 
         {bio && <p className="text-base">{bio}</p>}
@@ -113,7 +143,7 @@ const UserProfile: React.FC<Props> = ({ user, canEdit = false, posts }) => {
           </TabsList>
           <TabsContent value="tweets">
             {posts.map((post) => (
-              <div key={post.id} className="mt-5">
+              <div key={post.id} className="first:mt-5">
                 <TweetPreview
                   content={post.body}
                   image={post.User.image || ''}
@@ -123,6 +153,8 @@ const UserProfile: React.FC<Props> = ({ user, canEdit = false, posts }) => {
                   username={post.User.username!}
                   likeByUser={post.likeIds.some((like) => like === id)}
                   name={post.User.name!}
+                  comments={post.Comment.length}
+                  rts={0}
                 />
               </div>
             ))}

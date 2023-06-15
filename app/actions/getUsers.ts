@@ -18,8 +18,18 @@ const getUsers = async () => {
           email: session.user.email,
         },
       },
+      include: {
+        followedBy: {
+          select: {
+            followerId: true,
+            followingId: true,
+          },
+        },
+      },
     });
-    return users;
+    return users.filter(
+      (u) => !u.followedBy.some((f) => f.followerId === session.user.id)
+    );
   } catch (error) {
     return [];
   }

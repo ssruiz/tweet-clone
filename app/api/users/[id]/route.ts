@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 
 import prisma from '@/app/lib/prisma';
 import getSession from '@/app/actions/getSession';
+import { NextResponse } from 'next/server';
 
 interface IParams {
   id: string;

@@ -41,6 +41,7 @@ export default async function ProfilePage({ params }: { params: IParams }) {
         <UserProfile
           user={user}
           canEdit={session?.user.username === user.username}
+          currentUserId={session?.user.id!}
           posts={posts}
         />
       )}

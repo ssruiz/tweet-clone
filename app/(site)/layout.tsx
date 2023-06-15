@@ -34,16 +34,17 @@ export default async function RootLayout({
             <ToasterContext />
             {/* @ts-ignore React SC */}
             {/* <SidebarClient /> */}
-            <div className="col-span-2 hidden xs:block xl:col-span-3">
+            <div className="col-span-2 hidden xs:block">
               {/* @ts-ignore React SC */}
-              {sidebar}
+              <Sidebar />
+              {/* {sidebar} */}
             </div>
 
             <div className="col-span-11 xs:col-span-10 md:col-span-7 border-x-[1px] border-neutral-600 xl:col-span-6">
               {children}
             </div>
 
-            <div className="hidden md:block col-span-1 xl:col-span-3">
+            <div className="hidden md:block col-span-1 xl:col-span-4">
               {/* @ts-ignore React SC */}
               <FollowBar />
             </div>
