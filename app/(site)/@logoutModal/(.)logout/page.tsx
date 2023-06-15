@@ -1,5 +1,5 @@
 import LogoutMOdal from '@/app/logout/Components/LogoutModal';
 
-export default function ModalPage({ children }: { children: React.ReactNode }) {
+export default function ModalPage() {
   return <LogoutMOdal />;
 }

@@ -1,5 +1,5 @@
 import AuthModal from '@/app/auth/components/AuthModal';
 
-export default function ModalPage({ children }: { children: React.ReactNode }) {
+export default function ModalPage() {
   return <AuthModal />;
 }
