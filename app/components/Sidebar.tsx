@@ -1,4 +1,3 @@
-import Button from './ui/Button';
 import SideBarItem from './SideBarItem';
 import getRoutes from '../actions/getRoutes';
 

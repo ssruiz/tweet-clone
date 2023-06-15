@@ -1,4 +1,4 @@
-import { Follows, Post, User } from '@prisma/client';
+import { Comment, Follows, Post, User } from '@prisma/client';
 
 export type ProfileUserT = User & {
   tweetsCount: number;

@@ -1,6 +1,5 @@
 import prisma from '@/app/lib/prisma';
-import getSession from './getSession';
-import { PostDTO } from '../utils/types/posts';
+import { PostDTO } from '../utils/types';
 
 export const getPosts = async () => {
   // const session = await getSession();
@@ -32,7 +31,7 @@ export const getPosts = async () => {
   }
 };
 
-export const getPostsByUser = async (userId: string): PostDTO[] => {
+export const getPostsByUser = async (userId: string): Promise<PostDTO[]> => {
   // const session = await getSession();
 
   // if (!session?.user?.email) {
