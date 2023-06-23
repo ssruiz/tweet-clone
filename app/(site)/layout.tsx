@@ -7,6 +7,7 @@ import FollowBar from '../components/FollowBar';
 import { Suspense } from 'react';
 import Sidebar from '@/app/components/Sidebar';
 import ToasterContext from '../context/ToasterContext';
+import { ThemeProvider } from '../context/ThemeProvider';
 
 export const metadata = {
   title: 'TwitClone',
@@ -28,13 +29,14 @@ export default async function RootLayout({
 
   return (
     <AuthProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className="min-h-screen relative bg-black">
-          <div className="grid grid-cols-12 mx-auto h-full max-w-7xl ">
+          {/* <ThemeProvider> */}
+          <div className="grid grid-cols-12 mx-auto h-full max-w-7xl relative">
             <ToasterContext />
             {/* @ts-ignore React SC */}
             {/* <SidebarClient /> */}
-            <div className="col-span-2 hidden xs:block">
+            <div className="col-span-2 hidden xs:block relative">
               {/* @ts-ignore React SC */}
               <Sidebar />
               {/* {sidebar} */}
@@ -52,9 +54,9 @@ export default async function RootLayout({
             {authModal}
             {logoutModal}
           </div>
-
           {/* @ts-ignore React SC */}
           {!session && <LoginFooter />}
+          {/* </ThemeProvider> */}
         </body>
       </html>
     </AuthProvider>

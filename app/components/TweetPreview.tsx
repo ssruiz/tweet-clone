@@ -10,6 +10,8 @@ import { AiOutlineHeart, AiOutlineRetweet } from 'react-icons/ai';
 import { usePosts } from '../hooks';
 import { useRouter } from 'next/navigation';
 import { BsFillHeartFill, BsHeart } from 'react-icons/bs';
+import { useCallback, useState } from 'react';
+import Link from 'next/link';
 
 interface Props {
   image?: string;
@@ -22,6 +24,7 @@ interface Props {
   name: string;
   comments: number;
   rts: number;
+  authenticated: any;
 }
 
 const TweetPreview: React.FC<Props> = ({
@@ -35,21 +38,33 @@ const TweetPreview: React.FC<Props> = ({
   name,
   comments,
   rts,
+  authenticated,
 }) => {
   const router = useRouter();
+  console.log('date', date);
   const { likePost } = usePosts();
 
-  const onClickLike = async () => {
-    await likePost({ postId });
-    router.refresh();
-  };
+  const [fav, setFav] = useState(likeByUser);
+  const [internalLikes, setInternalLikes] = useState(likes);
 
+  const onClickLike = useCallback(async () => {
+    if (!authenticated) router.push('/auth');
+    else {
+      if (fav) setInternalLikes((prev) => prev - 1);
+      else setInternalLikes((prev) => prev + 1);
+      setFav((prev) => !prev);
+      await likePost({ postId });
+      router.refresh();
+    }
+  }, [authenticated, fav, likePost, postId, router]);
   return (
     <div className="border border-gray-800 h-auto flex p-4 gap-4 cursor-pointer">
       <Avatar image={image} userId="" />
       <div className="flex flex-col">
         <div className="flex justify-start items-center h-fit">
-          <p className="font-semibold text-white hover:underline">{name}</p>
+          <Link href={`/${username}`}>
+            <p className="font-semibold text-white hover:underline">{name}</p>
+          </Link>
           <p className="font-thin text-gray-400 ml-2 text-sm">@{username}</p>
           <p className="ml-2 text-gray-400 font-thin text-sm hover:underline">
             {tweetTimeElapsed(date)}
@@ -86,7 +101,7 @@ const TweetPreview: React.FC<Props> = ({
               className="p-3 rounded-full group-hover:bg-gray-200/10 transition duration-300"
               onClick={onClickLike}
             >
-              {likeByUser ? (
+              {fav ? (
                 <BsFillHeartFill
                   size={16}
                   className="text-red-500 group-hover:text-red-600 transition duration-300"
@@ -99,7 +114,7 @@ const TweetPreview: React.FC<Props> = ({
               )}
             </div>
             <span className="group-hover:text-red-500 text-white text-sm">
-              {likes}
+              {internalLikes}
             </span>
           </div>
         </div>

@@ -43,7 +43,6 @@ const UserProfile: React.FC<Props> = ({
 
   const [showModal, setShowModal] = useState(false);
 
-  console.log('user', user);
   const onClose = useCallback(() => {
     setShowModal(false);
   }, []);
@@ -139,6 +138,12 @@ const UserProfile: React.FC<Props> = ({
               value="replies"
             >
               Replies
+            </TabsTrigger>
+            <TabsTrigger
+              className="text-base font-medium data-[state=active]:decoration-4 data-[state=active]:underline data-[state=active]:bg-transparent text-white data-[state=active]:text-brand data-[state=active]:underline-offset-8 data-[state=active]:transition p-8 h-10 data-[state=active]:hover:bg-gray-500/30 hover:bg-gray-500/30 w-48"
+              value="likes"
+            >
+              Likes
             </TabsTrigger>
           </TabsList>
           <TabsContent value="tweets">

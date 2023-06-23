@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ProfileUserT, ResponseHook } from './../utils/types/index';
+import { PostDTO, ProfileUserT, ResponseHook } from './../utils/types/index';
 import { useCallback } from 'react';
 import { FieldValues } from 'react-hook-form';
 
@@ -62,7 +62,23 @@ const usePosts = () => {
     []
   );
 
-  return { createPost, likePost };
+  const getPostsPaginated = useCallback(
+    async (page: number = 1): Promise<PostDTO[]> => {
+      try {
+        const { data } = await axios.get<PostDTO[]>(
+          `/api/post/paginated?page=${page}`
+        );
+        console.log('data', data);
+        return data;
+      } catch (error) {
+        console.log('error', error);
+        return [];
+      }
+    },
+    []
+  );
+
+  return { createPost, likePost, getPostsPaginated };
 };
 
 export default usePosts;

@@ -7,7 +7,7 @@ const Sidebar = async () => {
   return (
     <ul
       role="list"
-      className="w-full flex flex-col py-4 gap-4 items-center xl:items-start"
+      className="w-full flex flex-col py-4 gap-4 items-center xl:items-start sticky top-0"
     >
       {routes.map((route) => (
         <SideBarItem key={route.label} {...route} />

@@ -4,10 +4,8 @@ import getSession from '@/app/actions/getSession';
 
 export async function POST(request: Request) {
   try {
-    console.log('hello');
     const session = await getSession();
 
-    console.log('session', session);
     if (!session) return new NextResponse('Unathorized', { status: 401 });
 
     const user = await prisma.user.findUnique({

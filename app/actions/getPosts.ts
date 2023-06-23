@@ -63,3 +63,27 @@ export const getPostsByUser = async (userId: string): Promise<PostDTO[]> => {
     return [];
   }
 };
+
+export const getPostById = async (postId: string): Promise<PostDTO | null> => {
+  try {
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+      include: {
+        Comment: true,
+        User: {
+          select: {
+            id: true,
+            username: true,
+            image: true,
+            name: true,
+          },
+        },
+      },
+    });
+    return post;
+  } catch (error) {
+    return null;
+  }
+};

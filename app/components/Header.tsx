@@ -11,7 +11,7 @@ interface Props {
 const Header: React.FC<Props> = ({ label, subLabel, canGoBack }) => {
   const router = useRouter();
   return (
-    <div className="border-b p-2 border-gray-700">
+    <div className="border-b p-2 border-gray-700 sticky top-0 bg-black/90 backdrop-blur-xl z-10">
       <div className="flex flex-row items-center gap-2">
         {canGoBack && (
           <BiArrowBack

@@ -18,8 +18,11 @@ import { usePosts, useToast } from '../hooks';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import SpinnerNormal from './ui/SpinnerNormal';
+import { useQueries, useQueryClient } from 'react-query';
 
 const TweetForm = () => {
+  const queryClient = useQueryClient();
+
   const { error, success } = useToast();
   const router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
@@ -51,6 +54,7 @@ const TweetForm = () => {
       else {
         success('Tweet posted!');
         reset();
+        queryClient.invalidateQueries({ queryKey: ['posts'] });
         router.refresh();
       }
     } catch (e) {

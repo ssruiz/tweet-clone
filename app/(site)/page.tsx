@@ -5,33 +5,25 @@ import TweetPreview from '../components/TweetPreview';
 import getSession from '../actions/getSession';
 import { getPosts } from '../actions/getPosts';
 import getUserByUsername from '../actions/getUser';
+import ThemeChanger from '../components/ThemeChanger';
+import Link from 'next/link';
+import PostList from '../components/PostList';
+import ReactQueryProvider from '../context/ReactQueryProvider';
 
 export default async function Home() {
   const session = await getSession();
-  const posts = await getPosts();
 
   return (
-    <div className="h-full">
-      <Header label="Home" />
-      {session && <TweetBox image={session?.user.image} />}
+    <div className="h-full relative">
+      <ReactQueryProvider>
+        <div className="sticky top-0 bg-black/50 z-10 backdrop-blur-xl">
+          <Header label="Home" />
+          {/* <ThemeChanger /> */}
+          {session && <TweetBox image={session?.user.image} />}
+        </div>
 
-      <div className="flex flex-col">
-        {posts.map((post) => (
-          <TweetPreview
-            key={post.id}
-            content={post.body}
-            image={post.User.image || ''}
-            date={post.createdAt}
-            postId={post.id}
-            likes={post.likeIds.length}
-            username={post.User.username!}
-            likeByUser={post.likeIds.some((like) => like === session?.user?.id)}
-            name={post.User.name!}
-            comments={post.Comment.length}
-            rts={0}
-          />
-        ))}
-      </div>
+        <PostList userId={session?.user.id} />
+      </ReactQueryProvider>
     </div>
   );
 }

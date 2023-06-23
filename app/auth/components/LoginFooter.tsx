@@ -6,8 +6,8 @@ import { useEffect } from 'react';
 
 const LoginFooter = async () => {
   return (
-    <div className="h-20 py-10 bg-brand flex justify-center items-center fixed bottom-0 left-0 w-full space-x-10">
-      <div className="shrink md:flex flex-col text-start px-10">
+    <div className="h-20  bg-brand flex justify-center items-center fixed bottom-0 left-0 w-full">
+      <div className="shrink hidden sm:flex flex-col text-start px-10">
         <p className="text-xl font-bold text-white">
           Don&apos;t miss what&apos;s happening
         </p>
@@ -16,14 +16,14 @@ const LoginFooter = async () => {
         </p>
       </div>
 
-      <div className="flex gap-2 px-10">
-        <Link href="/auth">
-          <Button variant="outline" className="rounded-full text-white">
+      <div className="flex gap-2 justify-between px-10 w-full max-w-sm">
+        <Link href="/auth" className="w-full">
+          <Button variant="outline" className="rounded-full text-white w-full">
             Log in
           </Button>
         </Link>
 
-        <Button variant="secondary" className="rounded-full">
+        <Button variant="secondary" className="rounded-full w-full">
           Sign up
         </Button>
       </div>
